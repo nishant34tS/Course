@@ -1,0 +1,38 @@
+const express = require('express');
+const app = express();
+app.use(express.json()); // Parse JSON bodies
+
+// Sample books array (in a real app this might come from a database)
+const books = [
+  {
+    isbn: "9780140435139",
+    title: "The Mayor of Casterbridge",
+    review: ""  // Initially, no review
+  },
+  {
+    isbn: "9780553144314",
+    title: "Future Shock",
+    review: ""
+  }
+];
+
+// POST route to add or modify a book review
+app.post('/books/:isbn/review', (req, res) => {
+  const isbn = req.params.isbn;
+  const { review } = req.body;
+
+  // Find the book by ISBN
+  const book = books.find(b => b.isbn === isbn);
+  if (!book) {
+    return res.status(404).json({ message: "Book not found" });
+  }
+
+  // Add or update the review
+  book.review = review;
+  res.json({ message: "Review added/modified", book });
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});

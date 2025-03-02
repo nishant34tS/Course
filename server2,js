@@ -1,0 +1,19 @@
+const express = require('express');
+const app = express();
+
+// Use JSON middleware to parse JSON request bodies
+app.use(express.json());
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  // For demonstration, assume these are the correct credentials
+  if (username === "nishant tek" && password === "hello") {
+    res.json({ message: "Login successful" });
+  } else {
+    res.status(401).json({ message: "Invalid credentials" });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
